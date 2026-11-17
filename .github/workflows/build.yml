@@ -1,37 +1,38 @@
-
 name: Build PowerTools
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
   workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   build:
-    name: Build PowerTools
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v5
 
       - name: Set up Java 21
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
-          distribution: temurin
+          distribution: 'temurin'
           java-version: '21'
-          cache: maven
 
-      - name: Build with Maven
+      - name: Ordnerstruktur für Maven vorbereiten
+        run: |
+          mkdir -p src/main/java/de/powertools
+          mkdir -p src/main/resources
+          if [ -f PowerToolsPlugin.java ]; then mv PowerToolsPlugin.java src/main/java/de/powertools/; fi
+          if [ -f plugin.yml ]; then mv plugin.yml src/main/resources/; fi
+
+      - name: Build JAR
         run: mvn -B clean package
 
-      - name: Upload PowerTools JAR
-        uses: actions/upload-artifact@v4
+      - name: Upload plugin JAR
+        uses: actions/upload-artifact@v5
         with:
           name: PowerTools-JAR
-          path: target/*.jar
-          if-no-files-found: error
+          path: target/PowerTools-1.0.0.jar
