@@ -1,0 +1,15 @@
+name: PowerTools
+version: 1.0.0
+main: de.powertools.PowerToolsPlugin
+api-version: '1.21.11'
+author: Nikusar
+description: Custom PowerTools items for PowerSMP.
+commands:
+  power:
+    description: PowerTools admin command
+    usage: /power items give <player> <axe|drill|cellx|bucket>
+    aliases: [powertools]
+permissions:
+  powertools.admin:
+    description: Allows giving PowerTools items
+    default: op
